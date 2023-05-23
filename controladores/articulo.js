@@ -73,29 +73,33 @@ const crear = (req, res) => {
 
 const listar = (req, res) => {
 
-    let consulta = Articulo.find({});
+    setTimeout(() => {
+        let consulta = Articulo.find({});
 
-    if (req.params.ultimos) {
-        consulta.limit(3);
-    }
+        if (req.params.ultimos) {
+            consulta.limit(3);
+        }
 
-    consulta.sort({ fecha: -1 })
-        .exec((error, articulos) => {
+        consulta.sort({ fecha: -1 })
+            .exec((error, articulos) => {
 
-            if (error || !articulos) {
-                return res.status(404).json({
-                    status: "error",
-                    mensaje: "No se han encontrado artículos!!"
+                if (error || !articulos) {
+                    return res.status(404).json({
+                        status: "error",
+                        mensaje: "No se han encontrado artículos!!"
+                    });
+                }
+
+                return res.status(200).send({
+                    status: "success",
+                    contador: articulos.length,
+                    articulos
                 });
-            }
 
-            return res.status(200).send({
-                status: "success",
-                contador: articulos.length,
-                articulos
             });
+    }, 5000);
 
-        });
+    
 
 }
 
